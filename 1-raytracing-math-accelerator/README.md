@@ -63,7 +63,15 @@ If $\Delta < 0$, the ray misses the sphere; if $\Delta \ge 0$, the ray hits, and
                         | Hit / Miss & t Result |
                         +-----------------------+
 ```
+## 🔧 Module Overview
 
+- `rtu_top.v` — MMIO wrapper that exposes the accelerator to a CPU (e.g. RocketChip) via a register map and a start/done interrupt interface. Implements a simple round-robin scheduler over three `intersection_controller` instances [19].
+- `intersection_controller.v` — Internal top-level controller that instantiates `dot_product`, `fp_multiplier`, `discriminant`, and `sqrt_array`, managing the 8-stage pipeline from L = O − C through discriminant, sqrt, and t calculation [18].
+- `dot_product.v` — Q16.16 3D dot product unit with control signals (`ctrl_in`/`ctrl_out`) used to compute a, half_b, and L·L over multiple passes [18].
+- `discriminant.v` — Two-cycle Q16.16 discriminant stage (`disc = in1 − in2`) with a 2-bit valid pipeline so `valid_out` aligns exactly with the registered result [15].
+- `fp_multiplier.v` / `fp_divider-3.v` — Fixed-point arithmetic blocks reused for r², a·c, half_b², and t calculation.
+- `sqrt_unit.v` — Square-root primitive instantiated eight times in `sqrt_array` for pipelined discriminant square root computation [18].
+  
 ---
 
 ## ⚙️ Key Technical Contributions
@@ -86,3 +94,13 @@ If $\Delta < 0$, the ray misses the sphere; if $\Delta \ge 0$, the ray hits, and
 - Set up custom logic analyzer test fixtures to characterize I/O timing on received silicon dies.
 - Measured clock-to-output latencies and validated correct execution against software reference models.
 
+---
+
+## ✅ Verification & UVM Environment
+
+This accelerator was verified in a SystemVerilog UVM environment maintained by our club’s digital lead.
+
+- The UVM testbench instantiates the `rtu_top` module and drives randomized and directed ray/sphere parameters through its MMIO interface.
+- A software golden model computes expected hit/miss and `t` values, which are checked against the hardware outputs (`hit`, `t_value`) for each test.
+- Scoreboards and monitors track corner cases such as negative discriminants, t ≤ 0 roots, and division-by-zero flags.
+- I contributed by integrating my RTL modules (`intersection_controller`, `discriminant`, dot product, and `rtu_top`) into the environment, running regressions, and debugging mismatches between waveforms and golden-model outputs.
