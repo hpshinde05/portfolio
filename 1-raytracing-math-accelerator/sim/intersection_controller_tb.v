@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
 
-module tb_intersection_controller;
+module intersection_controller_tb;
 
     reg clk_i;
     reg rst_n;
