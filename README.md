@@ -1,4 +1,4 @@
-# Harsh Shinde — Hardware & Embedded Systems Portfolio
+# Harsh Shinde — Portfolio
 
 [![Live Portfolio](https://img.shields.io/badge/Live_Site-hpshindeportfolio.framer.website-blue?style=flat-square)](https://hpshindeportfolio.framer.website/)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Harsh_Shinde-0077B5?style=flat-square&logo=linkedin)](https://linkedin.com/in/harsh-shinde-059396371)
