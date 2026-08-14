@@ -1,0 +1,15 @@
+
+Testing coin return from state 10:
+
+State:    00	x: 01	Change: 00	Disp: 0
+Expected: 00	   01	        00	      0
+
+State:    01	x: 01	Change: 00	Disp: 0
+Expected: 01	   01	        00	      0
+
+State:    10	x: 10	Change: 10	Disp: 0
+Expected: 10	   10	        10	      0
+
+State:    00	x: 01	Change: 00	Disp: 0
+Expected: 00	   01	        00	      0
+
